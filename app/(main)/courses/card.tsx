@@ -1,7 +1,6 @@
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
-import Image from 'next/image';
-import React from 'react';
 
 type Props = {
   id: number;
