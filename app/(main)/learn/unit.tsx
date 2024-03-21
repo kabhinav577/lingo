@@ -29,7 +29,7 @@ export const Unit = ({
       <UnitBanner title={title} description={description} />
       <div className="flex items-center flex-col relative">
         {lessons.map((lesson, index) => {
-          const isCurrent = true || activeLesson?.id === lesson.id; // TODO :: Remove Hardcode value true
+          const isCurrent = activeLesson?.id === lesson.id;
           const isLocked = !lesson.completed && !isCurrent;
 
           return (
