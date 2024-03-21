@@ -15,6 +15,11 @@ const main = async () => {
 
     await db.delete(schema.courses);
     await db.delete(schema.userProgress);
+    await db.delete(schema.units);
+    await db.delete(schema.lessons);
+    await db.delete(schema.challenges);
+    await db.delete(schema.challengeOptions);
+    await db.delete(schema.challengeProgress);
 
     await db.insert(schema.courses).values([
       {
@@ -46,6 +51,62 @@ const main = async () => {
         id: 6,
         title: 'French',
         imageSrc: '/flag/fr.svg',
+      },
+    ]);
+
+    await db.insert(schema.units).values([
+      {
+        id: 1,
+        title: 'Unit 1',
+        description: 'Learn the basics of Spanish',
+        courseId: 2,
+        order: 1,
+      },
+    ]);
+
+    await db.insert(schema.lessons).values([
+      {
+        id: 1,
+        unitId: 1,
+        order: 1,
+        title: 'Nouns',
+      },
+    ]);
+
+    await db.insert(schema.challenges).values([
+      {
+        id: 1,
+        lessonId: 1, // Nouns
+        type: 'SELECT',
+        question: 'Which one of these is the "the man"?',
+        order: 1,
+      },
+    ]);
+
+    await db.insert(schema.challengeOptions).values([
+      {
+        id: 1,
+        challengeId: 1, // which one of these is the "the man"
+        text: 'el hombre',
+        correct: true,
+        imageSrc: '/man.svg',
+        audioSrc: '/es_man.mp3',
+      },
+      {
+        id: 2,
+        challengeId: 1, // which one of these is the "the man"
+        text: 'la mujer',
+        correct: false,
+        imageSrc: '/woman.svg',
+        audioSrc: '/es_woman.mp3',
+      },
+      {
+        id: 3,
+        challengeId: 1, // which one of these is the "the man"
+        text: 'el robota',
+        correct: false,
+        imageSrc: '/robot.svg',
+        audioSrc: '/es_robot.mp3',
       },
     ]);
 
