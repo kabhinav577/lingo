@@ -155,6 +155,7 @@ export const getLesson = cache(async (id?: number) => {
       challenges: {
         orderBy: (challenges, { asc }) => [asc(challenges.order)],
         with: {
+          challengeOptions: true,
           challengeProgress: {
             where: eq(challengeProgress.userId, userId),
           },
