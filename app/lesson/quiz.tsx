@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import { toast } from 'sonner';
 import Confetti from 'react-confetti';
-import { useAudio, useWindowSize } from 'react-use';
+import { useRouter } from 'next/navigation';
+import { useAudio, useWindowSize, useMount } from 'react-use';
 import { useState, useTransition } from 'react';
 import { challengeOptions, challenges } from '@/db/schema';
+import { useHeartsModal } from '@/store/use-hearts-modal';
+import { usePracticeModal } from '@/store/use-practice-modal';
 
 import { Header } from './header';
 import { Footer } from './footer';
@@ -14,7 +17,6 @@ import { ResultCard } from './result-card';
 import { QuestionBubble } from './question-bubble';
 import { reduceHearts } from '@/actions/user-progress';
 import { upsetChallengeProgress } from '@/actions/challenge-progress';
-import { useRouter } from 'next/navigation';
 
 type Props = {
   initialLessonId: number;
@@ -34,6 +36,15 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const { open: openHeartsModal } = useHeartsModal();
+  const { open: openPracticeModal } = usePracticeModal();
+
+  useMount(() => {
+    if (initialPercentage === 100) {
+      openPracticeModal();
+    }
+  });
+
   const { width, height } = useWindowSize();
   const router = useRouter();
 
@@ -49,7 +60,9 @@ export const Quiz = ({
 
   const [lessonId] = useState(initialLessonId);
   const [hearts, setHearts] = useState(initialLessonHearts);
-  const [percentage, setPercentage] = useState(initialPercentage);
+  const [percentage, setPercentage] = useState(() => {
+    return initialPercentage === 100 ? 0 : initialPercentage;
+  });
   const [challenges, setChallenges] = useState(initialLessonChallenges);
   const [activeIndex, setActiveIndex] = useState(() => {
     const uncompletedIndex = challenges.findIndex(
@@ -99,7 +112,7 @@ export const Quiz = ({
         upsetChallengeProgress(challenge.id)
           .then((res) => {
             if (res?.error === 'hearts') {
-              console.error('Missing Hearts');
+              openHeartsModal();
               return;
             }
 
@@ -121,7 +134,7 @@ export const Quiz = ({
         reduceHearts(challenge.id)
           .then((res) => {
             if (res?.error === 'hearts') {
-              console.error('Missing Hearts');
+              openHeartsModal();
               return;
             }
 
