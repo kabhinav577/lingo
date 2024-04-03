@@ -6,7 +6,7 @@ import Confetti from 'react-confetti';
 import { useRouter } from 'next/navigation';
 import { useAudio, useWindowSize, useMount } from 'react-use';
 import { useState, useTransition } from 'react';
-import { challengeOptions, challenges } from '@/db/schema';
+import { challengeOptions, challenges, userSubscription } from '@/db/schema';
 import { useHeartsModal } from '@/store/use-hearts-modal';
 import { usePracticeModal } from '@/store/use-practice-modal';
 
@@ -26,7 +26,11 @@ type Props = {
     completed: boolean;
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
-  userSubscription: any; // TODO :: replace with subscription db type
+  userSubscription:
+    | (typeof userSubscription.$inferSelect & {
+        isActive: boolean;
+      })
+    | null;
 };
 
 export const Quiz = ({
