@@ -5,29 +5,9 @@ import { getUserProgress, getUserSubscription } from '@/db/queries';
 import { UserProgress } from '@/components/user-progress';
 import { FeedWrapper } from '@/components/feed-wrapper';
 import { StickyWrapper } from '@/components/sticky-wrapper';
-
-const quests = [
-  {
-    title: 'Earn 20 XP',
-    value: 20,
-  },
-  {
-    title: 'Earn 50 XP',
-    value: 50,
-  },
-  {
-    title: 'Earn 100 XP',
-    value: 100,
-  },
-  {
-    title: 'Earn 500 XP',
-    value: 500,
-  },
-  {
-    title: 'Earn 1000 XP',
-    value: 1000,
-  },
-];
+import { Progress } from '@/components/ui/progress';
+import { Promo } from '@/components/promo';
+import { quests } from '@/constants';
 
 const QuestsPage = async () => {
   const userProgressData = getUserProgress();
@@ -53,6 +33,7 @@ const QuestsPage = async () => {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
       </StickyWrapper>
       <FeedWrapper>
         <div className="w-full flex flex-col items-center">
@@ -77,6 +58,12 @@ const QuestsPage = async () => {
                     width={60}
                     height={60}
                   />
+                  <div className="flex flex-col gap-y-2 w-full">
+                    <p className="text-neutral-700 text-xl font-bold">
+                      {quest.title}
+                    </p>
+                    <Progress value={progress} className="h-3" />
+                  </div>
                 </div>
               );
             })}
