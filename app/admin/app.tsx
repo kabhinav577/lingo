@@ -15,6 +15,10 @@ import { LessonList } from './lesson/list';
 import { LessonEdit } from './lesson/edit';
 import { LessonCreate } from './lesson/create';
 
+import { ChallengeList } from './challenge/list';
+import { ChallengeEdit } from './challenge/edit';
+import { ChallengeCreate } from './challenge/create';
+
 const dataProvider = simpleRestProvider('/api');
 
 const App = () => {
@@ -39,6 +43,13 @@ const App = () => {
         list={LessonList}
         create={LessonCreate}
         edit={LessonEdit}
+        recordRepresentation="title"
+      />
+      <Resource
+        name="challenges"
+        list={ChallengeList}
+        create={ChallengeCreate}
+        edit={ChallengeEdit}
         recordRepresentation="title"
       />
     </Admin>
